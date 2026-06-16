@@ -6,6 +6,12 @@ import { prefersReducedMotion } from "@/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger);
 
+declare global {
+  interface Window {
+    __lenis?: Lenis;
+  }
+}
+
 export default function SmoothScrollProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (prefersReducedMotion()) return;
@@ -15,6 +21,9 @@ export default function SmoothScrollProvider({ children }: { children: ReactNode
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     });
+
+    // Expose for SPA-aware anchor navigation (Navbar).
+    window.__lenis = lenis;
 
     lenis.on("scroll", ScrollTrigger.update);
 
@@ -27,6 +36,7 @@ export default function SmoothScrollProvider({ children }: { children: ReactNode
     return () => {
       gsap.ticker.remove(onTick);
       lenis.destroy();
+      delete window.__lenis;
     };
   }, []);
 

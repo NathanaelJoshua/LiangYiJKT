@@ -20,13 +20,13 @@ export default {
         accent: "hsl(var(--accent) / <alpha-value>)",
       },
       fontFamily: {
-        display: ["Archivo", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["Fraunces", "ui-serif", "Georgia", "serif"],
         sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
         serif: ["Spectral", "ui-serif", "Georgia", "serif"],
-        mono: ["Geist Mono", "ui-monospace", "monospace"],
+        mono: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       letterSpacing: {
-        tightest: "-0.04em",
+        tightest: "-0.02em",
       },
       maxWidth: {
         site: "1400px",

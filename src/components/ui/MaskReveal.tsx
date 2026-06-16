@@ -12,20 +12,21 @@ interface MaskRevealProps {
 }
 
 const lineVariants: Variants = {
-  hidden: { y: "110%" },
+  hidden: { opacity: 0, y: 18 },
   show: (i: number) => ({
-    y: "0%",
+    opacity: 1,
+    y: 0,
     transition: {
-      duration: 0.9,
+      duration: 1,
       ease: [0.22, 1, 0.36, 1],
-      delay: i * 0.09,
+      delay: i * 0.1,
     },
   }),
 };
 
 /**
- * Line-by-line headline reveal: each line slides up from behind an
- * overflow-clip mask. Animates transform only.
+ * Line-by-line headline reveal: each line settles up with a soft fade.
+ * Calm and restrained — animates transform/opacity only.
  */
 export default function MaskReveal({
   lines,
@@ -44,7 +45,7 @@ export default function MaskReveal({
       viewport={{ once: true, margin: "-12% 0px" }}
     >
       {lines.map((line, i) => (
-        <span key={i} className="block overflow-hidden">
+        <span key={i} className="block">
           <motion.span
             className={cn("block will-change-transform", lineClassName)}
             custom={i + delay}

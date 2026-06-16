@@ -8,9 +8,7 @@ export default function BookCta() {
   return (
     <section id="book" className="bg-ink py-28 md:py-36">
       <div className="mx-auto max-w-site px-6 text-center">
-        <span className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-bg/60">
-          Begin your care
-        </span>
+        <span className="eyebrow text-bg/60">Begin your care</span>
         <MaskReveal
           as="h2"
           className="display mx-auto mt-6 max-w-[18ch] text-bg text-[clamp(2.6rem,8vw,6.5rem)]"

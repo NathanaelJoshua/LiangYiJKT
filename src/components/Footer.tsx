@@ -18,7 +18,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-12 border-b border-line pb-14 md:grid-cols-2">
           <div>
             <div className="flex items-baseline gap-3">
-              <span className="font-display text-3xl font-extrabold uppercase tracking-tightest text-ink">
+              <span className="font-display text-3xl font-medium tracking-tightest text-ink">
                 Liang Yi
               </span>
               <span className="font-serif text-2xl text-accent">{BRAND.chinese}</span>
@@ -33,7 +33,7 @@ export default function Footer() {
               The Liang Yi Letter — seasonal wellness notes
             </label>
             {sent ? (
-              <p className="mt-4 font-display text-xl font-bold uppercase tracking-tight text-accent">
+              <p className="mt-4 font-display text-xl font-medium tracking-tight text-accent">
                 Thank you — you're subscribed.
               </p>
             ) : (
@@ -93,7 +93,7 @@ export default function Footer() {
             <h4 className="eyebrow mb-4">Locale</h4>
             <select
               aria-label="Select locale"
-              className="border border-line bg-surface px-3 py-2 font-mono text-[0.7rem] uppercase tracking-[0.12em] text-ink focus:outline-none focus:ring-2 focus:ring-accent/40"
+              className="rounded-md border border-line bg-surface px-3 py-2 font-sans text-sm tracking-tight text-ink focus:outline-none focus:ring-2 focus:ring-accent/40"
               defaultValue="sg-en"
             >
               <option value="sg-en">Singapore · EN</option>
@@ -104,10 +104,10 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="flex flex-col gap-4 border-t border-line pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-mono text-[0.66rem] uppercase tracking-[0.12em] text-muted">
+          <p className="font-sans text-sm tracking-tight text-muted">
             © {2026} {BRAND.name}. All rights reserved.
           </p>
-          <p className="font-mono text-[0.66rem] uppercase tracking-[0.12em] text-muted">
+          <p className="font-sans text-sm tracking-tight text-muted">
             {BRAND.tagline}
           </p>
         </div>

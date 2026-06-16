@@ -4,12 +4,12 @@
 
 @layer base {
   :root {
-    --bg: 40 33% 96%;
-    --surface: 0 0% 100%;
-    --ink: 20 8% 10%;
-    --muted: 25 6% 42%;
-    --line: 30 12% 86%;
-    --accent: 158 28% 32%;
+    --bg: 36 30% 95%;
+    --surface: 40 24% 98%;
+    --ink: 28 14% 16%;
+    --muted: 30 8% 44%;
+    --line: 32 16% 84%;
+    --accent: 24 34% 46%;
   }
 
   * {
@@ -36,16 +36,16 @@
     text-wrap: balance;
   }
   .display {
-    @apply font-display uppercase tracking-tightest leading-[0.92];
+    @apply font-display font-medium tracking-tightest leading-[1.02];
   }
   .eyebrow {
-    @apply font-mono text-[0.7rem] uppercase tracking-[0.22em] text-muted;
+    @apply font-sans text-[0.72rem] uppercase tracking-[0.2em] text-muted;
+  }
+  .star {
+    @apply text-accent;
   }
   .hairline {
     @apply border-t border-line;
-  }
-  .clip-up {
-    clip-path: inset(0 0 100% 0);
   }
 }
 
