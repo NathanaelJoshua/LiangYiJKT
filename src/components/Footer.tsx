@@ -21,7 +21,7 @@ export default function Footer() {
               <span className="font-display text-3xl font-medium tracking-tightest text-ink">
                 Liang Yi
               </span>
-              <span className="font-serif text-2xl text-accent">{BRAND.chinese}</span>
+              <span className="font-serif text-2xl text-accent-deep">{BRAND.chinese}</span>
             </div>
             <p className="mt-4 max-w-prose text-base leading-relaxed text-muted">
               {BRAND.positioning} {BRAND.est}.
@@ -33,7 +33,7 @@ export default function Footer() {
               The Liang Yi Letter — seasonal wellness notes
             </label>
             {sent ? (
-              <p className="mt-4 font-display text-xl font-medium tracking-tight text-accent">
+              <p className="mt-4 font-display text-xl font-medium tracking-tight text-accent-deep">
                 Thank you — you're subscribed.
               </p>
             ) : (
@@ -50,7 +50,7 @@ export default function Footer() {
                 <button
                   type="submit"
                   aria-label="Subscribe"
-                  className="flex h-10 w-10 shrink-0 items-center justify-center text-ink transition-colors hover:text-accent"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center text-ink transition-colors hover:text-accent-deep"
                 >
                   <ArrowRight size={18} weight="bold" />
                 </button>

@@ -30,7 +30,7 @@ export default function ArticleDetail() {
           </p>
           <Link
             to="/insights"
-            className="mt-8 inline-flex items-center gap-2 border-b border-ink/20 pb-1 text-base tracking-tight text-ink transition-colors hover:border-accent hover:text-accent"
+            className="mt-8 inline-flex items-center gap-2 border-b border-ink/20 pb-1 text-base tracking-tight text-ink transition-colors hover:border-accent hover:text-accent-deep"
           >
             <ArrowLeft size={16} /> All insights
           </Link>
@@ -113,7 +113,7 @@ export default function ArticleDetail() {
                     Reading time
                   </p>
                   <p className="mt-3 flex items-center gap-2 font-sans text-sm tracking-tight text-ink">
-                    <Clock size={16} className="text-accent" /> {article.readTime}
+                    <Clock size={16} className="text-accent-deep" /> {article.readTime}
                   </p>
                 </div>
               </div>
@@ -125,7 +125,7 @@ export default function ArticleDetail() {
 
               <hr className="my-8 border-line" />
 
-              <p className="font-sans text-lg font-medium leading-relaxed text-accent">
+              <p className="font-sans text-lg font-medium leading-relaxed text-accent-deep">
                 {lead}
               </p>
 
@@ -149,7 +149,7 @@ export default function ArticleDetail() {
             <h2 className="font-display text-2xl font-medium tracking-tight text-ink">
               Keep reading
             </h2>
-            <Link to="/insights" className="font-sans text-sm tracking-tight text-accent hover:text-ink">
+            <Link to="/insights" className="font-sans text-sm tracking-tight text-accent-deep hover:text-ink">
               All insights →
             </Link>
           </div>

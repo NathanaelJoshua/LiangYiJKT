@@ -18,6 +18,7 @@ export default {
         muted: "hsl(var(--muted) / <alpha-value>)",
         line: "hsl(var(--line) / <alpha-value>)",
         accent: "hsl(var(--accent) / <alpha-value>)",
+        "accent-deep": "hsl(var(--accent-deep) / <alpha-value>)",
       },
       fontFamily: {
         display: ["Fraunces", "ui-serif", "Georgia", "serif"],
@@ -33,7 +34,7 @@ export default {
         prose: "65ch",
       },
       boxShadow: {
-        soft: "0 24px 60px -24px hsl(30 20% 20% / 0.18)",
+        soft: "0 24px 60px -24px hsl(196 30% 16% / 0.18)",
       },
       keyframes: {
         marquee: {

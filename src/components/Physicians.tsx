@@ -60,7 +60,7 @@ export default function Physicians() {
         <div className="grid grid-cols-1 items-end gap-8 md:grid-cols-12">
           <div className="md:col-span-7">
             <span className="inline-flex items-center gap-2 rounded-full border border-line bg-bg px-3.5 py-1.5">
-              <Leaf size={14} weight="fill" className="text-accent" />
+              <Leaf size={14} weight="fill" className="text-accent-deep" />
               <span className="font-sans text-sm tracking-tight text-ink">
                 Our physicians
               </span>

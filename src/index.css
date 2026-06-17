@@ -4,12 +4,13 @@
 
 @layer base {
   :root {
-    --bg: 36 30% 95%;
-    --surface: 40 24% 98%;
-    --ink: 28 14% 16%;
-    --muted: 30 8% 44%;
-    --line: 32 16% 84%;
-    --accent: 24 34% 46%;
+    --bg: 180 22% 97%;
+    --surface: 180 30% 99%;
+    --ink: 196 24% 13%;
+    --muted: 197 11% 42%;
+    --line: 186 20% 88%;
+    --accent: 170 76% 61%; /* #52E7CE — brand teal, for fills & on-dark */
+    --accent-deep: 174 68% 26%; /* legible teal for text on light */
   }
 
   * {
@@ -42,7 +43,7 @@
     @apply font-sans text-[0.72rem] uppercase tracking-[0.2em] text-muted;
   }
   .star {
-    @apply text-accent;
+    @apply text-accent-deep;
   }
   .hairline {
     @apply border-t border-line;

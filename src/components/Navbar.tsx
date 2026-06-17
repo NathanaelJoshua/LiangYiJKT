@@ -82,13 +82,14 @@ export default function Navbar({ overHero = false }: { overHero?: boolean }) {
         scrolled ? "bg-bg/85 backdrop-blur-md border-b border-line" : "bg-transparent"
       )}
     >
-      <div className="mx-auto flex h-16 max-w-site items-center justify-between px-6 md:h-20">
-        {/* Wordmark */}
-        <a href="/" onClick={(e) => handleNav(e, "/")} className="flex items-baseline gap-2">
-          <span className={cn("font-display text-xl font-medium tracking-tightest transition-colors", light ? "text-bg" : "text-ink")}>
-            Liang Yi
-          </span>
-          <span className="font-serif text-base text-accent">{BRAND.chinese}</span>
+      <div className="mx-auto flex h-20 max-w-site items-center justify-between px-6 md:h-24">
+        {/* Logo */}
+        <a href="/" onClick={(e) => handleNav(e, "/")} className="flex items-center">
+          <img
+            src="/logo.png"
+            alt={BRAND.name}
+            className={cn("h-14 w-auto md:h-16", light && "brightness-0 invert")}
+          />
         </a>
 
         {/* Center links */}

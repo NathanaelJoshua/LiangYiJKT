@@ -80,7 +80,7 @@ export default function ContactForm() {
   if (status === "sent") {
     return (
       <div className="flex flex-col items-start gap-5 rounded-lg border border-line bg-surface p-10">
-        <CheckCircle size={40} weight="fill" className="text-accent" />
+        <CheckCircle size={40} weight="fill" className="text-accent-deep" />
         <div>
           <h3 className="font-display text-2xl font-medium tracking-tight text-ink">
             Off to WhatsApp.
@@ -88,7 +88,7 @@ export default function ContactForm() {
           <p className="mt-2 max-w-prose text-base leading-relaxed text-muted">
             We've opened a pre-filled chat with our {fields.clinic} team. If nothing
             appeared, message us directly at{" "}
-            <a href={waLink(BRAND.whatsapp)} className="text-accent underline-offset-4 hover:underline">
+            <a href={waLink(BRAND.whatsapp)} className="text-accent-deep underline-offset-4 hover:underline">
               {BRAND.whatsapp}
             </a>
             .
@@ -99,7 +99,7 @@ export default function ContactForm() {
             setFields(empty);
             setStatus("idle");
           }}
-          className="inline-flex items-center gap-2 border-b border-ink/20 pb-1 text-sm tracking-tight text-ink transition-colors hover:border-accent hover:text-accent"
+          className="inline-flex items-center gap-2 border-b border-ink/20 pb-1 text-sm tracking-tight text-ink transition-colors hover:border-accent hover:text-accent-deep"
         >
           <ArrowClockwise size={15} /> Send another enquiry
         </button>

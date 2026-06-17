@@ -10,7 +10,7 @@ function ServiceCard({ service }: { service: Service }) {
         href="/contact"
         className="flex h-full flex-col rounded-2xl border border-line bg-bg p-5 transition-colors hover:bg-surface"
       >
-        <span className="font-sans text-xs uppercase tracking-[0.16em] text-accent">
+        <span className="font-sans text-xs uppercase tracking-[0.16em] text-accent-deep">
           {service.scope}
         </span>
         <h3 className="mt-2 font-display text-2xl font-medium leading-tight tracking-tight text-ink">

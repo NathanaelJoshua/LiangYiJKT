@@ -22,7 +22,7 @@ const sizes: Record<Size, string> = {
 const variants: Record<Variant, string> = {
   solid: "bg-ink text-bg hover:bg-accent",
   outline: "border border-ink/25 text-ink hover:border-ink/60 hover:bg-ink hover:text-bg",
-  ghost: "text-ink hover:text-accent rounded-none px-0",
+  ghost: "text-ink hover:text-accent-deep rounded-none px-0",
 };
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(

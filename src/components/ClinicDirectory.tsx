@@ -29,7 +29,7 @@ function ClinicRow({ clinic }: { clinic: Clinic }) {
     >
       {/* Name + region */}
       <div className="md:col-span-4">
-        <span className="font-sans text-xs uppercase tracking-[0.18em] text-accent">
+        <span className="font-sans text-xs uppercase tracking-[0.18em] text-accent-deep">
           {clinic.region}
         </span>
         <h3 className="mt-2 font-display text-2xl font-medium tracking-tight text-ink">
@@ -40,7 +40,7 @@ function ClinicRow({ clinic }: { clinic: Clinic }) {
       {/* Address + hours */}
       <div className="space-y-2 text-sm leading-relaxed text-muted md:col-span-4">
         <p className="flex items-start gap-2">
-          <MapPin size={16} className="mt-0.5 shrink-0 text-accent" weight="regular" />
+          <MapPin size={16} className="mt-0.5 shrink-0 text-accent-deep" weight="regular" />
           <span>
             {clinic.address}, {clinic.unit}
             <br />
@@ -48,7 +48,7 @@ function ClinicRow({ clinic }: { clinic: Clinic }) {
           </span>
         </p>
         <p className="flex items-start gap-2">
-          <Clock size={16} className="mt-0.5 shrink-0 text-accent" weight="regular" />
+          <Clock size={16} className="mt-0.5 shrink-0 text-accent-deep" weight="regular" />
           <span>
             Open {clinic.hours}
             <br />
@@ -61,7 +61,7 @@ function ClinicRow({ clinic }: { clinic: Clinic }) {
       <div className="flex flex-wrap items-center gap-x-5 gap-y-3 md:col-span-4 md:justify-end">
         <a
           href={telLink(clinic.phone)}
-          className="inline-flex items-center gap-1.5 text-sm tracking-tight text-ink transition-colors hover:text-accent"
+          className="inline-flex items-center gap-1.5 text-sm tracking-tight text-ink transition-colors hover:text-accent-deep"
         >
           <Phone size={15} /> {clinic.phone}
         </a>
@@ -69,7 +69,7 @@ function ClinicRow({ clinic }: { clinic: Clinic }) {
           href={waLink(clinic.whatsapp)}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-1.5 text-sm tracking-tight text-ink transition-colors hover:text-accent"
+          className="inline-flex items-center gap-1.5 text-sm tracking-tight text-ink transition-colors hover:text-accent-deep"
         >
           <WhatsappLogo size={16} /> WhatsApp
         </a>
@@ -77,7 +77,7 @@ function ClinicRow({ clinic }: { clinic: Clinic }) {
           href={clinicMaps(clinic)}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-1.5 border-b border-ink/20 pb-0.5 text-sm tracking-tight text-ink transition-colors hover:border-accent hover:text-accent"
+          className="inline-flex items-center gap-1.5 border-b border-ink/20 pb-0.5 text-sm tracking-tight text-ink transition-colors hover:border-accent hover:text-accent-deep"
         >
           Directions
           <ArrowUpRight size={14} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />

@@ -1,13 +1,35 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
-import { ArrowRight } from "@phosphor-icons/react";
+import { ArrowUpRight } from "@phosphor-icons/react";
 import { BRAND, img } from "@/lib/content";
 import { prefersReducedMotion } from "@/lib/utils";
 import MaskReveal from "./ui/MaskReveal";
-import Button from "./ui/Button";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+
+/** Pill CTA with a diagonally sliding arrow (adapted from aero-hero-3). */
+function ArrowPill({ href, label }: { href: string; label: string }) {
+  return (
+    <a href={href} className="group mx-auto flex w-fit items-center gap-1">
+      <span className="rounded-full bg-accent px-6 py-3.5 text-sm tracking-tight text-ink transition-colors duration-500 group-hover:bg-ink group-hover:text-accent">
+        {label}
+      </span>
+      <span className="relative flex h-[52px] w-[52px] items-center justify-center overflow-hidden rounded-full bg-accent text-ink transition-colors duration-500 group-hover:bg-ink group-hover:text-accent">
+        <ArrowUpRight
+          size={20}
+          weight="bold"
+          className="absolute transition-transform duration-500 ease-in-out group-hover:translate-x-12 group-hover:-translate-y-12"
+        />
+        <ArrowUpRight
+          size={20}
+          weight="bold"
+          className="absolute -translate-x-12 translate-y-12 transition-transform duration-500 ease-in-out group-hover:translate-x-0 group-hover:translate-y-0"
+        />
+      </span>
+    </a>
+  );
+}
 
 export default function Hero() {
   const imgRef = useRef<HTMLImageElement>(null);
@@ -25,58 +47,70 @@ export default function Hero() {
   }, []);
 
   return (
-    <section id="top" className="relative min-h-[100dvh] w-full overflow-hidden bg-ink">
+    <section id="top" className="relative flex min-h-[100dvh] w-full items-center justify-center overflow-hidden bg-ink">
       {/* Full-bleed media */}
       <div className="absolute inset-0">
         <img
           ref={imgRef}
           src={img("liangyi-hero-care", 2000, 1500)}
-          alt="A Liang Yi physician providing gentle, attentive TCM care"
+          alt="Calm, attentive Traditional Chinese Medicine care at Liang Yi"
           className="h-[112%] w-full object-cover"
           loading="eager"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink/70 via-ink/30 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-transparent to-ink/25" />
+        <div className="absolute inset-0 bg-ink/55" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-ink/30" />
+      </div>
+
+      {/* Vertical grid lines */}
+      <div className="absolute inset-0 z-10 mx-auto max-w-site">
+        <div className="grid h-full w-full grid-cols-12">
+          <div className="col-span-1 border-r border-bg/10" />
+          <div className="col-span-3 border-r border-bg/10" />
+          <div className="col-span-4 border-r border-bg/10" />
+          <div className="col-span-3 border-r border-bg/10" />
+          <div className="col-span-1" />
+        </div>
       </div>
 
       {/* Content */}
-      <div className="relative z-10 mx-auto flex min-h-[100dvh] max-w-site flex-col justify-between px-6 pb-14 pt-28 md:pt-32">
-        {/* Top-right supporting copy + CTA */}
+      <div className="relative z-20 mx-auto max-w-3xl px-6 text-center text-bg">
+        <motion.span
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease }}
+          className="inline-flex items-center rounded-full border border-bg/20 bg-bg/10 px-4 py-1.5 font-sans text-sm tracking-tight text-bg/85 backdrop-blur-sm"
+        >
+          Awarded TCM centre · {BRAND.est}
+        </motion.span>
+
+        <MaskReveal
+          as="h1"
+          className="display mt-7 text-bg text-[clamp(2.8rem,7vw,6rem)]"
+          lineClassName="text-center"
+          lines={[
+            "Our greatest wealth",
+            <span key="l2" className="italic">is health.</span>,
+          ]}
+        />
+
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.3, ease }}
+          className="mx-auto mt-7 max-w-xl text-lg font-light leading-relaxed text-bg/85"
+        >
+          {BRAND.positioning} Modern Traditional Chinese Medicine, delivered by
+          registered physicians across Singapore.
+        </motion.p>
+
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2, ease }}
-          className="ml-auto flex max-w-sm flex-col items-start gap-4 text-bg/85 md:items-end md:text-right"
+          transition={{ duration: 0.7, delay: 0.42, ease }}
+          className="mt-10"
         >
-          <p className="text-sm leading-relaxed">
-            We go beyond standard care to deliver a calmer, result-oriented experience —
-            prioritising your comfort, confidence and lasting wellbeing.
-          </p>
-          <Button as="a" href="/#contact" variant="solid" className="bg-bg text-ink hover:bg-accent hover:text-bg">
-            {BRAND.cta} <ArrowRight size={14} />
-          </Button>
+          <ArrowPill href="/#contact" label={BRAND.cta} />
         </motion.div>
-
-        {/* Bottom-left headline */}
-        <div>
-          <motion.span
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease }}
-            className="font-sans text-sm uppercase tracking-[0.2em] text-bg/70"
-          >
-            {BRAND.est} · {BRAND.tagline}
-          </motion.span>
-          <MaskReveal
-            as="h1"
-            className="display mt-5 text-bg text-[clamp(2.8rem,8vw,6.5rem)]"
-            lines={[
-              "Gentle hands,",
-              "genuine care,",
-              <span key="l3" className="italic">lasting health.</span>,
-            ]}
-          />
-        </div>
       </div>
     </section>
   );

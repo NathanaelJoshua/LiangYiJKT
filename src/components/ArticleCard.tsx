@@ -17,7 +17,7 @@ export default function ArticleCard({ a }: { a: Article }) {
         <p className="mt-5 font-sans text-xs uppercase tracking-[0.16em] text-muted">
           {a.date}
         </p>
-        <h3 className="mt-2 font-display text-2xl font-medium leading-tight tracking-tight text-ink transition-colors group-hover:text-accent">
+        <h3 className="mt-2 font-display text-2xl font-medium leading-tight tracking-tight text-ink transition-colors group-hover:text-accent-deep">
           {a.title}
         </h3>
         <p className="mt-3 line-clamp-3 text-base leading-relaxed text-muted">

@@ -28,19 +28,19 @@ export default function ContactSection({ as = "h2" }: { as?: "h1" | "h2" }) {
       <div className="mt-16 grid grid-cols-1 gap-12 md:mt-20 md:grid-cols-12 md:gap-16">
         <RevealOnScroll className="md:col-span-5">
           <div className="divide-y divide-line border-y border-line">
-            <InfoRow icon={<WhatsappLogo size={20} className="text-accent" />} label="WhatsApp">
-              <a href={waLink(BRAND.whatsapp)} target="_blank" rel="noreferrer" className="hover:text-accent">
+            <InfoRow icon={<WhatsappLogo size={20} className="text-accent-deep" />} label="WhatsApp">
+              <a href={waLink(BRAND.whatsapp)} target="_blank" rel="noreferrer" className="hover:text-accent-deep">
                 {BRAND.whatsapp}
               </a>
             </InfoRow>
-            <InfoRow icon={<Phone size={20} className="text-accent" />} label="Call">
-              <a href={telLink(BRAND.phone)} className="hover:text-accent">{BRAND.phone}</a>
+            <InfoRow icon={<Phone size={20} className="text-accent-deep" />} label="Call">
+              <a href={telLink(BRAND.phone)} className="hover:text-accent-deep">{BRAND.phone}</a>
             </InfoRow>
-            <InfoRow icon={<EnvelopeSimple size={20} className="text-accent" />} label="Email">
-              <a href={`mailto:${BRAND.email}`} className="hover:text-accent">{BRAND.email}</a>
+            <InfoRow icon={<EnvelopeSimple size={20} className="text-accent-deep" />} label="Email">
+              <a href={`mailto:${BRAND.email}`} className="hover:text-accent-deep">{BRAND.email}</a>
             </InfoRow>
-            <InfoRow icon={<MapPin size={20} className="text-accent" />} label="Clinics">
-              <a href="/clinic-locations" className="hover:text-accent">
+            <InfoRow icon={<MapPin size={20} className="text-accent-deep" />} label="Clinics">
+              <a href="/clinic-locations" className="hover:text-accent-deep">
                 {clinics.length} locations across Singapore
               </a>
             </InfoRow>

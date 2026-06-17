@@ -49,7 +49,7 @@ export default function Insights() {
               </div>
               <div className="flex flex-col justify-center">
                 <div className="flex items-center gap-3 font-sans text-sm tracking-tight text-muted">
-                  <span className="text-accent">{lead.category}</span>
+                  <span className="text-accent-deep">{lead.category}</span>
                   <span>·</span>
                   <span>{lead.readTime} · {lead.date}</span>
                 </div>
@@ -59,7 +59,7 @@ export default function Insights() {
                 <p className="mt-4 max-w-prose text-base leading-relaxed text-muted">
                   {lead.excerpt}
                 </p>
-                <span className="mt-6 inline-flex items-center gap-2 border-b border-ink/20 pb-1 text-sm tracking-tight text-ink transition-colors group-hover:border-accent group-hover:text-accent">
+                <span className="mt-6 inline-flex items-center gap-2 border-b border-ink/20 pb-1 text-sm tracking-tight text-ink transition-colors group-hover:border-accent group-hover:text-accent-deep">
                   Read article <ArrowRight size={15} />
                 </span>
               </div>

@@ -23,7 +23,7 @@ export default function Articles() {
         </div>
         <Link
           to="/insights"
-          className="font-sans text-sm tracking-tight text-accent hover:text-ink"
+          className="font-sans text-sm tracking-tight text-accent-deep hover:text-ink"
         >
           View all articles →
         </Link>

@@ -1,5 +1,5 @@
 import { partners } from "@/lib/content";
-import { LogoCloud } from "./ui/logo-cloud-2";
+import { LogoCloud } from "./ui/logo-cloud-3";
 import RevealOnScroll from "./ui/RevealOnScroll";
 import MaskReveal from "./ui/MaskReveal";
 
@@ -21,9 +21,13 @@ export default function Partners() {
           />
         </div>
 
-        <RevealOnScroll className="mt-12">
+        <div className="mx-auto my-9 h-px max-w-sm bg-line [mask-image:linear-gradient(to_right,transparent,black,transparent)]" />
+
+        <RevealOnScroll>
           <LogoCloud logos={partners} />
         </RevealOnScroll>
+
+        <div className="mx-auto mt-9 h-px max-w-sm bg-line [mask-image:linear-gradient(to_right,transparent,black,transparent)]" />
       </div>
     </section>
   );

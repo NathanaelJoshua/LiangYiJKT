@@ -38,7 +38,7 @@ function PlanCard({ plan }: { plan: Plan }) {
             <Check
               size={16}
               weight="bold"
-              className={cn("mt-0.5 shrink-0", plan.featured ? "text-accent" : "text-accent")}
+              className={cn("mt-0.5 shrink-0", plan.featured ? "text-accent" : "text-accent-deep")}
             />
             <span className={plan.featured ? "text-bg/90" : "text-ink/90"}>{f}</span>
           </li>
@@ -85,7 +85,7 @@ export default function Pricing() {
             <RevealOnScroll stagger className="space-y-12">
               {pricing.map((group) => (
                 <RevealItem key={group.title}>
-                  <h3 className="font-sans text-sm uppercase tracking-[0.18em] text-accent">
+                  <h3 className="font-sans text-sm uppercase tracking-[0.18em] text-accent-deep">
                     {group.title}
                   </h3>
                   <ul className="mt-4 divide-y divide-line border-t border-line">
