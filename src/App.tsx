@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { LangProvider } from "@/lib/lang";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import Index from "@/pages/Index";
 import Locations from "@/pages/Locations";
@@ -7,9 +8,13 @@ import Insights from "@/pages/Insights";
 import ArticleDetail from "@/pages/ArticleDetail";
 import Pricing from "@/pages/Pricing";
 import AboutPage from "@/pages/About";
+import Services from "@/pages/Services";
+import ServiceDetail from "@/pages/ServiceDetail";
+import AdminApp from "@/admin/AdminApp";
 
 export default function App() {
   return (
+    <LangProvider>
     <SmoothScrollProvider>
       <BrowserRouter>
         <Routes>
@@ -20,9 +25,13 @@ export default function App() {
           <Route path="/insights/:slug" element={<ArticleDetail />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/services/:slug" element={<ServiceDetail />} />
+          <Route path="/admin/*" element={<AdminApp />} />
           <Route path="*" element={<Index />} />
         </Routes>
       </BrowserRouter>
     </SmoothScrollProvider>
+    </LangProvider>
   );
 }

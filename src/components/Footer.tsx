@@ -1,8 +1,10 @@
 import { useState, type FormEvent } from "react";
-import { ArrowRight, InstagramLogo, FacebookLogo, TiktokLogo } from "@phosphor-icons/react";
-import { BRAND, navLinks } from "@/lib/content";
+import { ArrowRight, InstagramLogo, FacebookLogo, TiktokLogo, YoutubeLogo } from "@phosphor-icons/react";
+import { BRAND, navLinks, tr } from "@/lib/content";
+import { useLang } from "@/lib/lang";
 
 export default function Footer() {
+  const { lang } = useLang();
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
 
@@ -24,7 +26,7 @@ export default function Footer() {
               <span className="font-serif text-2xl text-accent-deep">{BRAND.chinese}</span>
             </div>
             <p className="mt-4 max-w-prose text-base leading-relaxed text-muted">
-              {BRAND.positioning} {BRAND.est}.
+              {tr(BRAND.positioning, lang)} {BRAND.est}.
             </p>
           </div>
 
@@ -84,9 +86,10 @@ export default function Footer() {
           <div>
             <h4 className="eyebrow mb-4">Follow</h4>
             <div className="flex gap-4 text-ink">
-              <a href="#" aria-label="Instagram" className="text-ink/60 hover:text-ink"><InstagramLogo size={20} /></a>
-              <a href="#" aria-label="Facebook" className="text-ink/60 hover:text-ink"><FacebookLogo size={20} /></a>
-              <a href="#" aria-label="TikTok" className="text-ink/60 hover:text-ink"><TiktokLogo size={20} /></a>
+              <a href={BRAND.socials.instagram} target="_blank" rel="noreferrer" aria-label="Instagram" className="text-ink/60 hover:text-ink"><InstagramLogo size={20} /></a>
+              <a href={BRAND.socials.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" className="text-ink/60 hover:text-ink"><FacebookLogo size={20} /></a>
+              <a href={BRAND.socials.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok" className="text-ink/60 hover:text-ink"><TiktokLogo size={20} /></a>
+              <a href={BRAND.socials.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" className="text-ink/60 hover:text-ink"><YoutubeLogo size={20} /></a>
             </div>
           </div>
           <div>
@@ -108,7 +111,7 @@ export default function Footer() {
             © {2026} {BRAND.name}. All rights reserved.
           </p>
           <p className="font-sans text-sm tracking-tight text-muted">
-            {BRAND.tagline}
+            {tr(BRAND.tagline, lang)}
           </p>
         </div>
       </div>

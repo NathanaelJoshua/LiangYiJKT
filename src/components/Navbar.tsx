@@ -1,9 +1,36 @@
 import { useCallback, useEffect, useState, type MouseEvent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { List, X, InstagramLogo, FacebookLogo } from "@phosphor-icons/react";
-import { BRAND, navLinks } from "@/lib/content";
+import { BRAND, navLinks, LANGS } from "@/lib/content";
+import { useLang } from "@/lib/lang";
 import { cn } from "@/lib/utils";
 import Button from "./ui/Button";
+
+function LangSwitch({ light }: { light: boolean }) {
+  const { lang, setLang } = useLang();
+  return (
+    <div className={cn("flex items-center rounded-full border p-0.5", light ? "border-bg/30" : "border-line")}>
+      {LANGS.map((l) => (
+        <button
+          key={l.code}
+          onClick={() => setLang(l.code)}
+          className={cn(
+            "rounded-full px-2.5 py-1 text-xs font-medium tracking-tight transition-colors",
+            lang === l.code
+              ? light
+                ? "bg-bg text-ink"
+                : "bg-ink text-bg"
+              : light
+                ? "text-bg/70 hover:text-bg"
+                : "text-muted hover:text-ink"
+          )}
+        >
+          {l.label}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 const NAV_OFFSET = 72;
 
@@ -113,18 +140,19 @@ export default function Navbar({ overHero = false }: { overHero?: boolean }) {
 
         {/* Right cluster */}
         <div className="hidden items-center gap-4 md:flex">
-          <a href="#" aria-label="Instagram" className={cn("transition-colors", light ? "text-bg/70 hover:text-bg" : "text-ink/60 hover:text-ink")}>
+          <LangSwitch light={light} />
+          <a href={BRAND.socials.instagram} target="_blank" rel="noreferrer" aria-label="Instagram" className={cn("transition-colors", light ? "text-bg/70 hover:text-bg" : "text-ink/60 hover:text-ink")}>
             <InstagramLogo size={18} weight="regular" />
           </a>
-          <a href="#" aria-label="Facebook" className={cn("transition-colors", light ? "text-bg/70 hover:text-bg" : "text-ink/60 hover:text-ink")}>
+          <a href={BRAND.socials.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" className={cn("transition-colors", light ? "text-bg/70 hover:text-bg" : "text-ink/60 hover:text-ink")}>
             <FacebookLogo size={18} weight="regular" />
           </a>
           <Button
             as="a"
             href="/#book"
             size="sm"
-            variant={light ? "outline" : "solid"}
-            className={light ? "border-bg/40 text-bg hover:bg-bg hover:text-ink" : undefined}
+            variant="solid"
+            className={light ? "bg-bg text-ink hover:bg-accent-deep hover:text-bg" : undefined}
             onClick={(e) => handleNav(e, "/#book")}
           >
             {BRAND.cta}
@@ -155,6 +183,7 @@ export default function Navbar({ overHero = false }: { overHero?: boolean }) {
                 {link.label}
               </a>
             ))}
+            <div className="mt-4"><LangSwitch light={false} /></div>
             <Button as="a" href="/#book" className="mt-4 w-full" onClick={(e) => handleNav(e, "/#book")}>
               {BRAND.cta}
             </Button>

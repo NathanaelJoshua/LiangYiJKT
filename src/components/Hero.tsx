@@ -1,8 +1,9 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
-import { ArrowUpRight } from "@phosphor-icons/react";
-import { BRAND, img } from "@/lib/content";
+import { ArrowUpRight, CaretDown } from "@phosphor-icons/react";
+import { BRAND, img, tr } from "@/lib/content";
+import { useLang } from "@/lib/lang";
 import { prefersReducedMotion } from "@/lib/utils";
 import MaskReveal from "./ui/MaskReveal";
 
@@ -32,6 +33,7 @@ function ArrowPill({ href, label }: { href: string; label: string }) {
 }
 
 export default function Hero() {
+  const { lang } = useLang();
   const imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
@@ -99,7 +101,7 @@ export default function Hero() {
           transition={{ duration: 0.7, delay: 0.3, ease }}
           className="mx-auto mt-7 max-w-xl text-lg font-light leading-relaxed text-bg/85"
         >
-          {BRAND.positioning} Modern Traditional Chinese Medicine, delivered by
+          {tr(BRAND.positioning, lang)} Modern Traditional Chinese Medicine, delivered by
           registered physicians across Singapore.
         </motion.p>
 
@@ -112,6 +114,31 @@ export default function Hero() {
           <ArrowPill href="/#contact" label={BRAND.cta} />
         </motion.div>
       </div>
+
+      {/* Scroll cue */}
+      <motion.a
+        href="/#about"
+        aria-label="Scroll to explore"
+        onClick={(e) => {
+          e.preventDefault();
+          const el = document.getElementById("about");
+          if (!el) return;
+          if (window.__lenis) window.__lenis.scrollTo(el, { offset: -72 });
+          else el.scrollIntoView({ behavior: "smooth" });
+        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.7, delay: 0.9, ease }}
+        className="absolute bottom-7 left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-2 text-bg/60 transition-colors hover:text-bg md:flex"
+      >
+        <span className="font-sans text-xs uppercase tracking-[0.2em]">Scroll</span>
+        <motion.span
+          animate={{ y: [0, 7, 0] }}
+          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <CaretDown size={18} />
+        </motion.span>
+      </motion.a>
     </section>
   );
 }

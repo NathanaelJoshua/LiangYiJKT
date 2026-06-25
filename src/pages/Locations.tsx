@@ -16,7 +16,13 @@ export default function Locations() {
   return (
     <>
       <Navbar />
-      <main>
+      <main className="relative isolate">
+        {/* Aesthetic backdrop: green→white wash + faint map dot-grid */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[110vh] bg-gradient-to-b from-accent/35 via-accent/10 to-transparent"
+        />
+
         {/* Asymmetric editorial header */}
         <header className="mx-auto max-w-site px-6 pb-12 pt-32 md:pt-40">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:items-end">

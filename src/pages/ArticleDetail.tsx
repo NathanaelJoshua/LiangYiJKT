@@ -6,10 +6,12 @@ import Footer from "@/components/Footer";
 import BookCta from "@/components/BookCta";
 import ArticleCard from "@/components/ArticleCard";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
-import { articles, getArticle } from "@/lib/content";
+import { articles, getArticle, tr } from "@/lib/content";
+import { useLang } from "@/lib/lang";
 
 export default function ArticleDetail() {
   const { slug } = useParams();
+  const { lang } = useLang();
   const article = slug ? getArticle(slug) : undefined;
 
   useEffect(() => {
@@ -59,15 +61,15 @@ export default function ArticleDetail() {
           {/* Centered title + tag pills */}
           <header className="mx-auto mt-8 max-w-3xl text-center">
             <h1 className="font-display text-[clamp(2rem,5vw,3.6rem)] font-medium leading-[1.05] tracking-tightest text-ink">
-              {article.title}
+              {tr(article.title, lang)}
             </h1>
             <div className="mt-6 flex flex-wrap justify-center gap-2">
-              {article.tags.map((tag) => (
+              {article.tags.map((tag, i) => (
                 <span
-                  key={tag}
+                  key={i}
                   className="rounded-full border border-line bg-surface px-3.5 py-1.5 font-sans text-xs tracking-tight text-muted"
                 >
-                  {tag}
+                  {tr(tag, lang)}
                 </span>
               ))}
             </div>
@@ -78,7 +80,7 @@ export default function ArticleDetail() {
             <div className="relative aspect-[16/9] overflow-hidden rounded-xl bg-line">
               <img
                 src={article.image}
-                alt={article.title}
+                alt={tr(article.title, lang)}
                 className="absolute inset-0 h-full w-full object-cover"
               />
             </div>
@@ -121,17 +123,17 @@ export default function ArticleDetail() {
 
             {/* Body */}
             <div className="md:col-span-8 md:col-start-5">
-              <p className="text-lg leading-relaxed text-muted">{article.excerpt}</p>
+              <p className="text-lg leading-relaxed text-muted">{tr(article.excerpt, lang)}</p>
 
               <hr className="my-8 border-line" />
 
               <p className="font-sans text-lg font-medium leading-relaxed text-accent-deep">
-                {lead}
+                {tr(lead, lang)}
               </p>
 
               {rest.map((para, i) => (
                 <p key={i} className="mt-6 text-lg leading-relaxed text-ink/90">
-                  {para}
+                  {tr(para, lang)}
                 </p>
               ))}
 

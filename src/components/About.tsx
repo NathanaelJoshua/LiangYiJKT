@@ -4,7 +4,7 @@ import MaskReveal from "./ui/MaskReveal";
 
 export default function About({ as = "h2" }: { as?: "h1" | "h2" }) {
   return (
-    <section id="about" className="border-b border-line bg-bg">
+    <section id="about" className="border-b border-line">
       <div className="mx-auto max-w-site px-6 py-24 md:py-32">
         {/* Centered trust statement */}
         <div className="mx-auto max-w-3xl text-center">
@@ -31,22 +31,17 @@ export default function About({ as = "h2" }: { as?: "h1" | "h2" }) {
           </RevealOnScroll>
         </div>
 
-        {/* Stat chips */}
+        {/* Stat band */}
         <RevealOnScroll
           stagger
-          className="mx-auto mt-12 flex max-w-4xl flex-wrap justify-center gap-4"
+          className="mx-auto mt-14 grid max-w-4xl grid-cols-2 divide-x divide-y divide-line overflow-hidden rounded-2xl border border-line bg-surface sm:grid-cols-4 sm:divide-y-0"
         >
           {aboutStats.map((s) => (
-            <RevealItem
-              key={s.label}
-              className="flex items-center gap-3 rounded-2xl border border-line bg-surface px-5 py-4"
-            >
-              <span className="font-display text-3xl font-medium tracking-tightest text-ink">
+            <RevealItem key={s.label} className="p-7 text-center">
+              <p className="font-display text-4xl font-medium tracking-tightest text-ink md:text-5xl">
                 {s.value}
-              </span>
-              <span className="max-w-[12ch] text-left text-sm leading-snug text-muted">
-                {s.label}
-              </span>
+              </p>
+              <p className="mx-auto mt-2 max-w-[14ch] text-sm leading-snug text-muted">{s.label}</p>
             </RevealItem>
           ))}
         </RevealOnScroll>

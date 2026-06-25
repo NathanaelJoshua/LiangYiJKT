@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { WhatsappLogo, CheckCircle, ArrowClockwise } from "@phosphor-icons/react";
-import { BRAND, clinics, services, waLink } from "@/lib/content";
+import { BRAND, clinics, services, waLink, tr } from "@/lib/content";
+import { useLang } from "@/lib/lang";
 import { cn } from "@/lib/utils";
 
 interface Fields {
@@ -17,7 +18,7 @@ const empty: Fields = {
   phone: "",
   email: "",
   clinic: clinics[0].name,
-  service: services[0].name,
+  service: services[0].name.en,
   message: "",
 };
 
@@ -52,6 +53,7 @@ const fieldBase =
   "h-12 w-full rounded-md border bg-surface px-4 text-base text-ink placeholder:text-muted/55 transition-colors focus:outline-none focus:ring-2 focus:ring-accent/40";
 
 export default function ContactForm() {
+  const { lang } = useLang();
   const [fields, setFields] = useState<Fields>(empty);
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "sent">("idle");
@@ -156,8 +158,8 @@ export default function ContactForm() {
         <Field label="Service of interest">
           <select value={fields.service} onChange={set("service")} className={cn(fieldBase, "border-line")}>
             {services.map((s) => (
-              <option key={s.id} value={s.name}>
-                {s.name}
+              <option key={s.id} value={s.name.en}>
+                {tr(s.name, lang)}
               </option>
             ))}
           </select>

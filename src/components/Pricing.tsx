@@ -1,57 +1,63 @@
-import { Check, ArrowRight } from "@phosphor-icons/react";
-import { pricing, plans, type Plan } from "@/lib/content";
+import { Check, ArrowRight, ShieldCheck } from "@phosphor-icons/react";
+import { pricing, plans, tr, type Plan, type Lang } from "@/lib/content";
+import { useLang } from "@/lib/lang";
 import { cn } from "@/lib/utils";
 import RevealOnScroll, { RevealItem } from "./ui/RevealOnScroll";
 import MaskReveal from "./ui/MaskReveal";
 
-function PlanCard({ plan }: { plan: Plan }) {
+function PlanCard({ plan, lang }: { plan: Plan; lang: Lang }) {
+  const featured = !!plan.featured;
   return (
     <RevealItem
       className={cn(
-        "flex flex-col rounded-xl border p-7",
-        plan.featured ? "border-ink/80 bg-ink text-bg" : "border-line bg-surface text-ink"
+        "relative flex flex-col rounded-2xl border p-7 transition-transform duration-300 md:p-8",
+        featured
+          ? "border-ink bg-ink text-bg shadow-soft md:-translate-y-2"
+          : "border-line bg-surface text-ink"
       )}
     >
-      <div className="flex items-baseline justify-between">
-        <h4 className="font-display text-xl font-medium tracking-tight">{plan.name}</h4>
-        {plan.featured && (
-          <span className="rounded-full bg-accent px-3 py-1 font-sans text-xs tracking-tight text-bg">
-            Most popular
-          </span>
-        )}
-      </div>
+      {featured && (
+        <span className="absolute -top-3 left-7 rounded-full bg-accent px-3 py-1 font-sans text-xs font-medium tracking-tight text-ink">
+          Most popular
+        </span>
+      )}
 
-      <div className="mt-5 flex items-baseline gap-2">
-        <span className="font-display text-4xl font-medium tracking-tightest">{plan.price}</span>
-        <span className={cn("font-sans text-sm", plan.featured ? "text-bg/60" : "text-muted")}>
-          / {plan.cadence}
+      <h3 className="font-display text-xl font-medium tracking-tight">{tr(plan.name, lang)}</h3>
+
+      <div className="mt-4 flex items-end gap-1.5">
+        <span className="font-display text-5xl font-medium tracking-tightest">{plan.price}</span>
+        <span className={cn("pb-1.5 font-sans text-sm", featured ? "text-bg/60" : "text-muted")}>
+          / {tr(plan.cadence, lang)}
         </span>
       </div>
 
-      <p className={cn("mt-3 text-sm leading-relaxed", plan.featured ? "text-bg/75" : "text-muted")}>
-        {plan.blurb}
+      <p className={cn("mt-3 text-sm leading-relaxed", featured ? "text-bg/75" : "text-muted")}>
+        {tr(plan.blurb, lang)}
       </p>
 
-      <ul className="mt-6 flex-1 space-y-3">
-        {plan.features.map((f) => (
-          <li key={f} className="flex items-start gap-2.5 text-sm leading-relaxed">
-            <Check
-              size={16}
-              weight="bold"
-              className={cn("mt-0.5 shrink-0", plan.featured ? "text-accent" : "text-accent-deep")}
-            />
-            <span className={plan.featured ? "text-bg/90" : "text-ink/90"}>{f}</span>
+      <div className={cn("my-6 h-px", featured ? "bg-bg/15" : "bg-line")} />
+
+      <ul className="flex-1 space-y-3">
+        {plan.features.map((f, i) => (
+          <li key={i} className="flex items-start gap-2.5 text-sm leading-relaxed">
+            <span
+              className={cn(
+                "mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full",
+                featured ? "bg-accent/25 text-accent" : "bg-accent/15 text-accent-deep"
+              )}
+            >
+              <Check size={11} weight="bold" />
+            </span>
+            <span className={featured ? "text-bg/90" : "text-ink/90"}>{tr(f, lang)}</span>
           </li>
         ))}
       </ul>
 
       <a
-        href="/contact"
+        href="/#contact"
         className={cn(
-          "mt-7 inline-flex h-11 items-center justify-center gap-2 rounded-full px-6 text-sm tracking-tight transition-colors active:scale-[0.98]",
-          plan.featured
-            ? "bg-bg text-ink hover:bg-accent hover:text-bg"
-            : "bg-ink text-bg hover:bg-accent"
+          "mt-7 inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-sm font-medium tracking-tight transition-colors active:scale-[0.98]",
+          featured ? "bg-bg text-ink hover:bg-accent hover:text-ink" : "bg-ink text-bg hover:bg-accent-deep"
         )}
       >
         Book this <ArrowRight size={14} />
@@ -61,67 +67,83 @@ function PlanCard({ plan }: { plan: Plan }) {
 }
 
 export default function Pricing() {
+  const { lang } = useLang();
   return (
-    <section id="pricing" className="bg-bg">
+    <section id="pricing">
       <div className="mx-auto max-w-site px-6 pb-24 pt-32 md:pb-28 md:pt-40">
-        <div className="mb-14 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div>
-            <span className="eyebrow">Pricing</span>
-            <MaskReveal
-              as="h1"
-              className="display mt-5 text-ink text-[clamp(2.4rem,6vw,5rem)]"
-              lines={["Transparent fees,", "no surprises"]}
-            />
-          </div>
-          <p className="max-w-prose text-base leading-relaxed text-muted">
-            Clear pricing across every clinic. CHAS, Pioneer and Merdeka Generation
-            subsidies are accepted where applicable.
+        {/* Header */}
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="eyebrow">Pricing</span>
+          <MaskReveal
+            as="h1"
+            className="display mt-5 text-ink text-[clamp(2.4rem,6vw,4.6rem)]"
+            lineClassName="text-center"
+            lines={[
+              <>
+                Simple, <span className="italic">transparent</span> pricing
+              </>,
+            ]}
+          />
+          <p className="mx-auto mt-5 max-w-prose text-base leading-relaxed text-muted">
+            Clear fees across every clinic — no hidden charges. Start with a package, or
+            pay per visit from the full price list below.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
-          {/* Price list */}
-          <div className="lg:col-span-7">
-            <RevealOnScroll stagger className="space-y-12">
-              {pricing.map((group) => (
-                <RevealItem key={group.title}>
-                  <h3 className="font-sans text-sm uppercase tracking-[0.18em] text-accent-deep">
-                    {group.title}
-                  </h3>
-                  <ul className="mt-4 divide-y divide-line border-t border-line">
-                    {group.items.map((item) => (
-                      <li key={item.name} className="flex items-baseline justify-between gap-6 py-4">
-                        <div>
-                          <p className="font-display text-lg font-medium tracking-tight text-ink">
-                            {item.name}
-                          </p>
-                          {item.note && (
-                            <p className="mt-0.5 text-sm text-muted">{item.note}</p>
-                          )}
-                        </div>
-                        <span className="shrink-0 font-display text-lg font-medium tracking-tight text-ink tabular-nums">
-                          {item.price}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </RevealItem>
-              ))}
-            </RevealOnScroll>
-            <p className="mt-8 max-w-prose text-sm leading-relaxed text-muted">
-              Prices are indicative and may vary by clinic and physician. Herbal
-              medicine is charged separately based on your prescription.
-            </p>
+        {/* Plans */}
+        <RevealOnScroll stagger className="mx-auto mt-16 grid max-w-3xl items-stretch gap-6 sm:grid-cols-2">
+          {plans.map((plan, i) => (
+            <PlanCard key={i} plan={plan} lang={lang} />
+          ))}
+        </RevealOnScroll>
+
+        {/* Full price list */}
+        <div className="mt-24 md:mt-28">
+          <div className="mb-10 flex flex-col gap-3 text-center">
+            <span className="eyebrow">Pay per visit</span>
+            <h2 className="display text-ink text-[clamp(1.8rem,4vw,3rem)]">The full price list</h2>
           </div>
 
-          {/* Plans */}
-          <div className="lg:col-span-5 lg:col-start-8">
-            <RevealOnScroll stagger className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-1">
-              {plans.map((plan) => (
-                <PlanCard key={plan.name} plan={plan} />
-              ))}
-            </RevealOnScroll>
-          </div>
+          <RevealOnScroll stagger className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {pricing.map((group, gi) => (
+              <RevealItem key={gi} className="rounded-2xl border border-line bg-surface p-6">
+                <h3 className="font-sans text-sm uppercase tracking-[0.16em] text-accent-deep">
+                  {tr(group.title, lang)}
+                </h3>
+                <ul className="mt-4 divide-y divide-line">
+                  {group.items.map((item, ii) => (
+                    <li key={ii} className="flex items-baseline justify-between gap-4 py-3.5">
+                      <div className="min-w-0">
+                        <p className="font-display text-base font-medium tracking-tight text-ink">
+                          {tr(item.name, lang)}
+                        </p>
+                        {tr(item.note, lang) && (
+                          <p className="mt-0.5 text-sm leading-snug text-muted">{tr(item.note, lang)}</p>
+                        )}
+                      </div>
+                      <span className="shrink-0 font-display text-base font-medium tracking-tight text-ink tabular-nums">
+                        {item.price}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </RevealItem>
+            ))}
+          </RevealOnScroll>
+
+          {/* Subsidies / note */}
+          <RevealOnScroll className="mt-8">
+            <div className="flex flex-col gap-4 rounded-2xl border border-line bg-ink p-6 text-bg sm:flex-row sm:items-center md:p-7">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent/20 text-accent">
+                <ShieldCheck size={22} />
+              </span>
+              <p className="text-sm leading-relaxed text-bg/85">
+                <span className="font-medium text-bg">CHAS, Pioneer & Merdeka Generation</span> subsidies are
+                accepted where applicable. Prices are indicative and may vary by clinic and physician; herbal
+                medicine is charged separately based on your prescription.
+              </p>
+            </div>
+          </RevealOnScroll>
         </div>
       </div>
     </section>

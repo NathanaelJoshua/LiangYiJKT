@@ -4,36 +4,101 @@
 export const img = (seed: string, w = 800, h = 1000) =>
   `https://picsum.photos/seed/${seed}/${w}/${h}`;
 
+/* ---------- i18n ---------- */
+export type Lang = "en" | "id";
+export const LANGS: { code: Lang; label: string }[] = [
+  { code: "en", label: "EN" },
+  { code: "id", label: "ID" },
+];
+
+/** A string with English + Bahasa Indonesia variants. */
+export interface Localized {
+  en: string;
+  id: string;
+}
+
+/** Build a Localized value; id defaults to en until translated. */
+export const loc = (en: string, id?: string): Localized => ({ en, id: id ?? en });
+
+/** Resolve a localized value (or plain string) to the chosen language. */
+export const tr = (v: Localized | string | undefined, lang: Lang): string => {
+  if (v == null) return "";
+  if (typeof v === "string") return v;
+  return v[lang] || v.en;
+};
+
 export const BRAND = {
   name: "Liang Yi TCM",
   chinese: "良醫中醫",
   est: "Est. 2016",
-  tagline: "Our Greatest Wealth is Health",
-  positioning: "Result-oriented TCM solutions for your health needs.",
+  tagline: loc("Our Greatest Wealth is Health"),
+  positioning: loc("Result-oriented TCM solutions for your health needs."),
   cta: "Book an Appointment",
   email: "hello@liangyitcm.sg",
   phone: "+65 6464 9413",
   whatsapp: "+65 8988 2413",
+  socials: {
+    instagram: "https://instagram.com/liangyitcm",
+    facebook: "https://facebook.com/liangyitcm",
+    tiktok: "https://tiktok.com/@liangyitcm",
+    youtube: "https://youtube.com/@liangyitcm",
+  },
 };
+
+export interface ServiceFAQ {
+  q: Localized;
+  a: Localized;
+}
+
+export interface ServiceBenefit {
+  title: Localized;
+  copy: Localized;
+}
 
 export interface Service {
   id: string;
-  name: string;
-  scope: string;
-  description: string;
+  name: Localized;
+  scope: Localized;
+  description: Localized;
   image: string;
   hoverImage: string;
+  whatIs: Localized;
+  conditions: Localized[];
+  benefits: ServiceBenefit[];
+  faqs: ServiceFAQ[];
 }
 
-export const services: Service[] = [
+export const getService = (id: string) => services.find((s) => s.id === id);
+
+const rawServices = [
   {
     id: "consultation",
     name: "Consultation",
     scope: "Diagnosis & herbal prescription",
     description:
       "Pulse and tongue diagnosis with a registered physician, paired with a tailored herbal formula calibrated to your constitution.",
-    image: img("liangyi-consult", 800, 1000),
+    image: img("liangyi-consult", 1200, 1500),
     hoverImage: img("liangyi-consult2", 800, 1000),
+    whatIs:
+      "A TCM consultation begins with pattern differentiation — reading your pulse, tongue, history and lifestyle to understand the root imbalance behind your symptoms. From this picture, a physician prescribes a herbal formula and care plan made for your body, not a template.",
+    conditions: [
+      "Fatigue & low energy",
+      "Digestive complaints",
+      "Sleep disturbance",
+      "Hormonal imbalance",
+      "Weak immunity",
+      "Stress & anxiety",
+    ],
+    benefits: [
+      { title: "Root-cause clarity", copy: "Understand the underlying pattern, not just the surface symptom." },
+      { title: "A tailored formula", copy: "Herbal medicine calibrated to your constitution and adjusted over time." },
+      { title: "A clear plan", copy: "Know what to expect, how long it may take, and how progress is measured." },
+    ],
+    faqs: [
+      { q: "How long is a first consultation?", a: "Typically 45–60 minutes, covering a full intake, pulse and tongue diagnosis, and your initial plan." },
+      { q: "Do I need to prepare?", a: "Avoid coffee, brushing your tongue or eating strongly coloured foods just before, as these affect tongue diagnosis." },
+      { q: "Will I receive herbs the same day?", a: "In most cases, yes — your prescription is dispensed at the clinic after your consultation." },
+    ],
   },
   {
     id: "tcm-treatments",
@@ -41,8 +106,28 @@ export const services: Service[] = [
     scope: "Acupuncture · cupping · tuina",
     description:
       "Time-tested modalities — acupuncture, cupping and tuina — applied with modern hygiene and precision to restore flow and balance.",
-    image: img("liangyi-acu", 800, 1000),
+    image: img("liangyi-acu", 1200, 1500),
     hoverImage: img("liangyi-acu2", 800, 1000),
+    whatIs:
+      "TCM treatments use fine, sterile needles, gentle suction and structured manual therapy to move Qi and blood, release tension and restore balance. From a modern view, they activate the nervous system, improve circulation and prompt the body's own pain-relieving response.",
+    conditions: [
+      "Back & neck pain",
+      "Headaches & migraines",
+      "Muscle tension",
+      "Joint stiffness",
+      "Poor circulation",
+      "Stress & fatigue",
+    ],
+    benefits: [
+      { title: "Drug-free relief", copy: "Targeted treatment that reduces symptoms and reliance on pain medication." },
+      { title: "Restored flow", copy: "Acupuncture and cupping release tension and improve circulation." },
+      { title: "Hands-on recovery", copy: "Tuina realigns and relaxes muscle and connective tissue." },
+    ],
+    faqs: [
+      { q: "Is acupuncture safe?", a: "Yes — when performed by a trained, licensed and qualified TCM physician using single-use sterile needles." },
+      { q: "Does it hurt?", a: "Most people feel only a mild sensation. Needles are far finer than those used for injections." },
+      { q: "How many sessions will I need?", a: "It varies by condition; many patients notice improvement within a handful of sessions." },
+    ],
   },
   {
     id: "wellness-therapy",
@@ -50,8 +135,28 @@ export const services: Service[] = [
     scope: "Preventive & restorative care",
     description:
       "Seasonal tonics, moxibustion and guided wellness programmes that build resilience and sustain everyday vitality.",
-    image: img("liangyi-well", 800, 1000),
+    image: img("liangyi-well", 1200, 1500),
     hoverImage: img("liangyi-well2", 800, 1000),
+    whatIs:
+      "Wellness therapy is preventive care — strengthening the body before illness takes hold. Through seasonal tonics, moxibustion and tailored programmes, we support immunity, energy and resilience so you feel well, not just not-unwell.",
+    conditions: [
+      "Low immunity",
+      "Chronic fatigue",
+      "Cold hands & feet",
+      "Seasonal sensitivity",
+      "Burnout",
+      "Slow recovery",
+    ],
+    benefits: [
+      { title: "Lasting resilience", copy: "Build the body's baseline so it weathers stress and seasons better." },
+      { title: "Sustained energy", copy: "Address the roots of fatigue rather than masking it." },
+      { title: "Preventive habits", copy: "Guidance on diet and lifestyle tuned to your constitution." },
+    ],
+    faqs: [
+      { q: "Who is wellness therapy for?", a: "Anyone wanting to maintain health, recover from a demanding period, or prevent recurring issues." },
+      { q: "What is moxibustion?", a: "A warming therapy using the herb mugwort to stimulate acupoints and support circulation and immunity." },
+      { q: "How often should I come?", a: "Many patients visit seasonally, with a physician tailoring frequency to your needs." },
+    ],
   },
   {
     id: "women-children",
@@ -59,8 +164,28 @@ export const services: Service[] = [
     scope: "Fertility · postpartum · paediatric",
     description:
       "Gentle, evidence-informed protocols for menstrual health, fertility support, confinement recovery and paediatric tuina.",
-    image: img("liangyi-women", 800, 1000),
+    image: img("liangyi-women", 1200, 1500),
     hoverImage: img("liangyi-women2", 800, 1000),
+    whatIs:
+      "Care for every stage — from menstrual health and fertility to postpartum recovery and gentle paediatric tuina. Protocols are gentle, evidence-informed and adapted to the unique needs of women and children.",
+    conditions: [
+      "Irregular cycles",
+      "Menstrual cramps",
+      "Fertility support",
+      "Postpartum recovery",
+      "Paediatric digestion",
+      "Childhood immunity",
+    ],
+    benefits: [
+      { title: "Cycle support", copy: "Address menstrual and hormonal patterns at the root." },
+      { title: "Fertility & confinement", copy: "Considered care across the reproductive journey." },
+      { title: "Gentle for children", copy: "Needle-free paediatric tuina suited to little ones." },
+    ],
+    faqs: [
+      { q: "Is treatment safe during pregnancy?", a: "Certain treatments are, when overseen by a qualified physician. Always inform us if you are or may be pregnant." },
+      { q: "What is paediatric tuina?", a: "A gentle, needle-free massage technique for children, often used for digestion and immunity." },
+      { q: "Can TCM support IVF?", a: "Many patients use TCM alongside fertility treatment; we coordinate care conservatively." },
+    ],
   },
   {
     id: "face-therapy",
@@ -68,8 +193,28 @@ export const services: Service[] = [
     scope: "Cosmetic acupuncture & lifting",
     description:
       "Facial acupuncture and meridian massage that stimulate collagen, ease tension and restore a luminous, balanced complexion.",
-    image: img("liangyi-face", 800, 1000),
+    image: img("liangyi-face", 1200, 1500),
     hoverImage: img("liangyi-face2", 800, 1000),
+    whatIs:
+      "Cosmetic acupuncture and meridian massage work with the face's natural structure — stimulating collagen, easing muscular tension and improving circulation for a brighter, more balanced complexion, without injections or downtime.",
+    conditions: [
+      "Dull complexion",
+      "Fine lines",
+      "Facial puffiness",
+      "Jaw tension",
+      "Uneven tone",
+      "Stress in the face",
+    ],
+    benefits: [
+      { title: "Natural radiance", copy: "Stimulates collagen and circulation for a healthy glow." },
+      { title: "Released tension", copy: "Eases jaw and facial muscle tightness." },
+      { title: "No downtime", copy: "A gentle, injection-free approach you can return to work after." },
+    ],
+    faqs: [
+      { q: "How soon will I see results?", a: "Many notice a brighter, calmer complexion after a few sessions, with effects building over a course." },
+      { q: "Is it painful?", a: "Needles are extremely fine; most clients find the session relaxing." },
+      { q: "How long does a session take?", a: "About 60 minutes, including facial massage and acupuncture." },
+    ],
   },
   {
     id: "pain-management",
@@ -77,10 +222,44 @@ export const services: Service[] = [
     scope: "Musculoskeletal & chronic pain",
     description:
       "Targeted relief for back, neck, joint and sports injuries through acupuncture, electro-stimulation and structured tuina.",
-    image: img("liangyi-pain", 800, 1000),
+    image: img("liangyi-pain", 1200, 1500),
     hoverImage: img("liangyi-pain2", 800, 1000),
+    whatIs:
+      "A focused approach to musculoskeletal and chronic pain. Combining acupuncture, electro-stimulation and structured tuina, we target the source of pain to restore movement and reduce reliance on medication.",
+    conditions: [
+      "Chronic back pain",
+      "Neck & shoulder pain",
+      "Sciatica",
+      "Frozen shoulder",
+      "Sports injuries",
+      "Osteoarthritis",
+    ],
+    benefits: [
+      { title: "Targeted relief", copy: "Treatment aimed at the source of pain, not just the symptom." },
+      { title: "Restored movement", copy: "Improve range of motion and recover function faster." },
+      { title: "Less medication", copy: "A drug-free path that can reduce reliance on painkillers." },
+    ],
+    faqs: [
+      { q: "What conditions respond best?", a: "Back, neck, joint and sports-related pain often respond well, especially with a consistent course." },
+      { q: "What is electro-acupuncture?", a: "A gentle electrical current applied through needles to enhance pain relief and muscle recovery." },
+      { q: "When will I feel better?", a: "Some feel relief immediately; lasting change usually builds over several sessions." },
+    ],
   },
 ];
+
+// Wrap the English seed into the bilingual shape (id defaults to en until translated).
+export const services: Service[] = rawServices.map((s) => ({
+  id: s.id,
+  image: s.image,
+  hoverImage: s.hoverImage,
+  name: loc(s.name),
+  scope: loc(s.scope),
+  description: loc(s.description),
+  whatIs: loc(s.whatIs),
+  conditions: s.conditions.map((c) => loc(c)),
+  benefits: s.benefits.map((b) => ({ title: loc(b.title), copy: loc(b.copy) })),
+  faqs: s.faqs.map((f) => ({ q: loc(f.q), a: loc(f.a) })),
+}));
 
 export interface Step {
   no: string;
@@ -117,17 +296,17 @@ export const journey: Step[] = [
 ];
 
 export interface PriceItem {
-  name: string;
-  note?: string;
+  name: Localized;
+  note: Localized;
   price: string;
 }
 
 export interface PriceGroup {
-  title: string;
+  title: Localized;
   items: PriceItem[];
 }
 
-export const pricing: PriceGroup[] = [
+const rawPricing = [
   {
     title: "Consultations",
     items: [
@@ -155,16 +334,21 @@ export const pricing: PriceGroup[] = [
   },
 ];
 
+export const pricing: PriceGroup[] = rawPricing.map((g) => ({
+  title: loc(g.title),
+  items: g.items.map((it) => ({ name: loc(it.name), note: loc(it.note), price: it.price })),
+}));
+
 export interface Plan {
-  name: string;
+  name: Localized;
   price: string;
-  cadence: string;
-  blurb: string;
-  features: string[];
+  cadence: Localized;
+  blurb: Localized;
+  features: Localized[];
   featured?: boolean;
 }
 
-export const plans: Plan[] = [
+const rawPlans = [
   {
     name: "First Visit",
     price: "$78",
@@ -191,6 +375,15 @@ export const plans: Plan[] = [
     ],
   },
 ];
+
+export const plans: Plan[] = rawPlans.map((p) => ({
+  price: p.price,
+  featured: p.featured,
+  name: loc(p.name),
+  cadence: loc(p.cadence),
+  blurb: loc(p.blurb),
+  features: p.features.map((f) => loc(f)),
+}));
 
 export interface Physician {
   name: string;
@@ -257,35 +450,45 @@ export const waLink = (num: string) =>
 export const telLink = (num: string) => `tel:${num.replace(/[^0-9+]/g, "")}`;
 
 export interface Testimonial {
-  quote: string;
+  quote: Localized;
   name: string;
-  meta: string;
+  meta: Localized;
+  image: string;
 }
 
-export const testimonials: Testimonial[] = [
-  { quote: "Six sessions and my chronic back pain is finally manageable. The physicians explain everything clearly.", name: "Rachel T.", meta: "Google review · Tampines" },
-  { quote: "Helped me through my fertility journey with so much patience. Forever grateful to the team.", name: "Priya S.", meta: "Google review · NEX" },
-  { quote: "Modern, clean and professional — nothing like the old TCM halls. Results speak for themselves.", name: "Daniel W.", meta: "Google review · VivoCity" },
-  { quote: "My migraines dropped from weekly to almost none. The acupuncture works wonders.", name: "Hui Min L.", meta: "Google review · Jurong Point" },
-  { quote: "Face therapy gave me a real glow before my wedding. Highly recommend the team.", name: "Cheryl A.", meta: "Google review · Bugis" },
-  { quote: "They treat the root, not just symptoms. My digestion has never been better.", name: "Marcus L.", meta: "Google review · AMK Hub" },
+const rawTestimonials = [
+  { quote: "Six sessions and my chronic back pain is finally manageable. The physicians explain everything clearly.", name: "Rachel Tan", meta: "Patient · Tampines", image: portrait(31) },
+  { quote: "Helped me through my fertility journey with so much patience. Forever grateful to the team.", name: "Priya Subramaniam", meta: "Patient · NEX", image: portrait(45) },
+  { quote: "Modern, clean and professional — nothing like the old TCM halls. The results speak for themselves.", name: "Daniel Wong", meta: "Patient · VivoCity", image: portrait(12) },
+  { quote: "My migraines dropped from weekly to almost none. The acupuncture genuinely works wonders.", name: "Hui Min Lee", meta: "Patient · Jurong Point", image: portrait(20) },
+  { quote: "Face therapy gave me a real glow before my wedding. I'd recommend the team to anyone.", name: "Cheryl Aw", meta: "Patient · Bugis", image: portrait(47) },
+  { quote: "They treat the root, not just the symptoms. My digestion has never been better.", name: "Marcus Lim", meta: "Patient · AMK Hub", image: portrait(8) },
+  { quote: "Booking on WhatsApp is so easy and the physicians actually listen. A refreshing experience.", name: "Germaine Koh", meta: "Patient · Great World", image: portrait(32) },
+  { quote: "After my sports injury, their tuina and acupuncture had me back training in weeks.", name: "Faizal Rahman", meta: "Patient · PLQ Mall", image: portrait(13) },
 ];
+
+export const testimonials: Testimonial[] = rawTestimonials.map((t) => ({
+  name: t.name,
+  image: t.image,
+  quote: loc(t.quote),
+  meta: loc(t.meta),
+}));
 
 export interface Article {
   slug: string;
-  title: string;
-  category: string;
-  tags: string[];
+  title: Localized;
+  category: Localized;
+  tags: Localized[];
   readTime: string;
   date: string;
   author: string;
   authorImage: string;
-  excerpt: string;
+  excerpt: Localized;
   image: string;
-  body: string[];
+  body: Localized[];
 }
 
-export const articles: Article[] = [
+const rawArticles = [
   {
     slug: "cooling-foods-singapore-heat",
     title: "Cooling foods for Singapore's heat: a TCM guide",
@@ -364,12 +567,33 @@ export const articles: Article[] = [
   },
 ];
 
+// Wrap the English seed into the bilingual shape (id defaults to en until translated).
+export const articles: Article[] = rawArticles.map((a) => ({
+  slug: a.slug,
+  readTime: a.readTime,
+  date: a.date,
+  author: a.author,
+  authorImage: a.authorImage,
+  image: a.image,
+  title: loc(a.title),
+  category: loc(a.category),
+  excerpt: loc(a.excerpt),
+  tags: a.tags.map((t) => loc(t)),
+  body: a.body.map((p) => loc(p)),
+}));
+
 export const getArticle = (slug: string) =>
   articles.find((a) => a.slug === slug);
 
+/** Reading time estimated from total words in the body (~200 wpm). */
+export const readingTime = (body: Localized[]): string => {
+  const words = body.map((p) => p.en).join(" ").trim().split(/\s+/).filter(Boolean).length;
+  return `${Math.max(1, Math.round(words / 200))} min`;
+};
+
 export const navLinks = [
   { label: "About", href: "/about" },
-  { label: "Services", href: "/#services" },
+  { label: "Services", href: "/services" },
   { label: "Pricing", href: "/pricing" },
   { label: "Locations", href: "/clinic-locations" },
   { label: "Insights", href: "/insights" },
