@@ -111,12 +111,20 @@ export default function Navbar({ overHero = false }: { overHero?: boolean }) {
     >
       <div className="mx-auto flex h-20 max-w-site items-center justify-between px-6 md:h-24">
         {/* Logo */}
-        <a href="/" onClick={(e) => handleNav(e, "/")} className="flex items-center">
+        <a href="/" onClick={(e) => handleNav(e, "/")} className="flex items-center gap-3">
           <img
             src="/logo.png"
             alt={BRAND.name}
             className={cn("h-14 w-auto md:h-16", light && "brightness-0 invert")}
           />
+          <span
+            className={cn(
+              "font-display text-xl tracking-tightest md:text-2xl",
+              light ? "text-bg" : "text-ink"
+            )}
+          >
+            {BRAND.name}
+          </span>
         </a>
 
         {/* Center links */}
@@ -147,16 +155,18 @@ export default function Navbar({ overHero = false }: { overHero?: boolean }) {
           <a href={BRAND.socials.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" className={cn("transition-colors", light ? "text-bg/70 hover:text-bg" : "text-ink/60 hover:text-ink")}>
             <FacebookLogo size={18} weight="regular" />
           </a>
-          <Button
-            as="a"
+          <a
             href="/#book"
-            size="sm"
-            variant="solid"
-            className={light ? "bg-bg text-ink hover:bg-accent-deep hover:text-bg" : undefined}
             onClick={(e) => handleNav(e, "/#book")}
+            className={cn(
+              "inline-flex h-10 items-center justify-center rounded-full px-6 text-sm font-medium tracking-tight transition-colors duration-500",
+              light
+                ? "bg-bg text-ink hover:bg-accent-deep hover:text-bg"
+                : "bg-ink text-bg hover:bg-accent-deep"
+            )}
           >
             {BRAND.cta}
-          </Button>
+          </a>
         </div>
 
         {/* Mobile toggle */}
