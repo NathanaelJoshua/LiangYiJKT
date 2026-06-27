@@ -3,19 +3,29 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft } from "@phosphor-icons/react";
 import { useCms } from "../AdminData";
 import { api } from "../api";
-import { Btn, Card, EditHeader, EditLangProvider, LangTabs, LocField } from "../ui";
+import { Btn, Card, EditHeader, EditLangProvider, Field, LangTabs, LocField, MediaUpload, Section } from "../ui";
 import type { Localized } from "@/lib/content";
+import type { PageContent } from "../cms";
+
+const isLoc = (v: Localized | string): v is Localized => typeof v === "object" && v !== null && "en" in v;
 
 export default function PageEdit() {
   const { page } = useParams();
   const name = page ? decodeURIComponent(page) : "";
   const { data, refresh } = useCms();
   const navigate = useNavigate();
-  const [fields, setFields] = useState<Record<string, Localized> | null>(null);
+  const [fields, setFields] = useState<PageContent | null>(null);
+  const [heroImage, setHeroImage] = useState("");
   const [busy, setBusy] = useState(false);
 
+  // The Home page also owns the hero background image (stored on the company profile).
+  const isHome = name.toLowerCase() === "home";
+
   useEffect(() => {
-    if (data) setFields(data.pages[name] ?? null);
+    if (data) {
+      setFields(data.pages[name] ?? null);
+      setHeroImage(data.company.heroImage ?? "");
+    }
   }, [data, name]);
 
   if (!data) return <p className="text-sm text-muted">Loading…</p>;
@@ -30,12 +40,15 @@ export default function PageEdit() {
     );
   }
 
-  const set = (key: string, value: Localized) => setFields({ ...fields, [key]: value });
+  const set = (key: string, value: Localized | string) => setFields({ ...fields, [key]: value });
 
   const save = async () => {
     setBusy(true);
     try {
       await api.savePages({ ...data.pages, [name]: fields });
+      if (isHome && heroImage !== (data.company.heroImage ?? "")) {
+        await api.saveCompany({ ...data.company, heroImage });
+      }
       await refresh();
       navigate("/admin/pages");
     } finally {
@@ -52,18 +65,33 @@ export default function PageEdit() {
         subtitle="Headings and copy shown on this page"
         actions={<><LangTabs /><Btn onClick={save} disabled={busy}>{busy ? "Saving…" : "Save"}</Btn></>}
       />
+      {isHome && (
+        <div className="mb-5">
+          <Section title="Hero image" desc="Background image behind the homepage hero. Use a wide, high-resolution photo.">
+            <Field label="Hero image">
+              <MediaUpload value={heroImage} onChange={setHeroImage} accept="image/*" aspect="wide" />
+            </Field>
+          </Section>
+        </div>
+      )}
       <Card>
         <div className="flex flex-col gap-6">
-          {Object.entries(fields).map(([key, value]) => (
-            <LocField
-              key={key}
-              label={key}
-              value={value}
-              onChange={(v) => set(key, v)}
-              textarea={value.en.length > 60}
-              rows={3}
-            />
-          ))}
+          {Object.entries(fields).map(([key, value]) =>
+            isLoc(value) ? (
+              <LocField
+                key={key}
+                label={key}
+                value={value}
+                onChange={(v) => set(key, v)}
+                textarea={value.en.length > 60}
+                rows={3}
+              />
+            ) : (
+              <Field key={key} label={key}>
+                <MediaUpload value={value} onChange={(url) => set(key, url)} accept="image/*" aspect="wide" />
+              </Field>
+            )
+          )}
         </div>
       </Card>
     </EditLangProvider>

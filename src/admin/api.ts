@@ -1,6 +1,5 @@
 import { TOKEN_KEY } from "./cms";
-import type { AdminUser, CompanyProfile, CmsData, LocationItem, PhysicianItem, PartnerItem, TestimonialItem } from "./cms";
-import type { Localized } from "@/lib/content";
+import type { AdminUser, CompanyProfile, CmsData, LocationItem, PhysicianItem, PartnerItem, TestimonialItem, PageContent } from "./cms";
 import type { Service, Article, PriceGroup, Plan } from "@/lib/content";
 
 export const getToken = () => localStorage.getItem(TOKEN_KEY);
@@ -50,7 +49,7 @@ export const api = {
     }),
 
   saveCompany: (v: CompanyProfile) => req("PUT", "/company", v),
-  savePages: (v: Record<string, Record<string, Localized>>) => req("PUT", "/pages", v),
+  savePages: (v: Record<string, PageContent>) => req("PUT", "/pages", v),
   savePricing: (v: { groups: PriceGroup[]; plans: Plan[] }) => req("PUT", "/pricing", v),
 
   createUser: (u: AdminUser & { password?: string }) => req("POST", "/users", u),

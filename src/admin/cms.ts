@@ -30,6 +30,7 @@ export interface CompanyProfile {
   whatsapp: string;
   address: string;
   hours: string;
+  heroImage: string;
   socials: {
     instagram: string;
     facebook: string;
@@ -38,7 +39,8 @@ export interface CompanyProfile {
   };
 }
 
-export type PageContent = Record<string, Localized>;
+/** Page fields are bilingual text (Localized) or a plain string (e.g. an image URL). */
+export type PageContent = Record<string, Localized | string>;
 
 export interface CmsData {
   users: AdminUser[];

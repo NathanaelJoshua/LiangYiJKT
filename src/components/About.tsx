@@ -1,33 +1,29 @@
-import { aboutStats } from "@/lib/content";
+import { aboutStats, loc, tr } from "@/lib/content";
+import { useLang } from "@/lib/lang";
+import { usePageField } from "@/lib/cms-data";
 import RevealOnScroll, { RevealItem } from "./ui/RevealOnScroll";
-import MaskReveal from "./ui/MaskReveal";
 
 export default function About({ as = "h2" }: { as?: "h1" | "h2" }) {
+  const { lang } = useLang();
+  const Heading = as;
+  const eyebrow = usePageField("About", "Eyebrow", loc("About us"));
+  const headline = usePageField("About", "Headline", loc("Trusted expertise, tailored care, and lasting wellness."));
+  const intro = usePageField(
+    "About",
+    "Intro",
+    loc("Established in 2016, Liang Yi has blended a 2,000-year tradition with modern rigour to create a truly calming TCM experience.")
+  );
   return (
     <section id="about" className="border-b border-line">
       <div className="mx-auto max-w-site px-6 py-24 md:py-32">
         {/* Centered trust statement */}
         <div className="mx-auto max-w-3xl text-center">
-          <span className="eyebrow">About us</span>
-          <MaskReveal
-            as={as}
-            className="display mt-6 text-ink text-[clamp(1.9rem,4.4vw,3.4rem)]"
-            lineClassName="text-center"
-            lines={[
-              <>Trusted expertise, tailored care,</>,
-              <>
-                and <span className="italic">lasting wellness.</span>
-              </>,
-            ]}
-          />
+          <span className="eyebrow">{tr(eyebrow, lang)}</span>
+          <Heading className="display mt-6 text-ink text-[clamp(1.9rem,4.4vw,3.4rem)]">
+            {tr(headline, lang)}
+          </Heading>
           <RevealOnScroll className="mt-6">
-            <p className="mx-auto max-w-2xl text-lg leading-relaxed text-muted">
-              Established in 2016, Liang Yi has blended a 2,000-year tradition with
-              modern rigour to create a truly calming TCM experience.{" "}
-              <span className="text-ink/55">
-                Where heritage, evidence and care come together beautifully.
-              </span>
-            </p>
+            <p className="mx-auto max-w-2xl text-lg leading-relaxed text-muted">{tr(intro, lang)}</p>
           </RevealOnScroll>
         </div>
 

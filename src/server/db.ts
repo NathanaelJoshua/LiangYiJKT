@@ -31,6 +31,7 @@ export const defaultCompany = {
   whatsapp: BRAND.whatsapp,
   address: "12 clinics islandwide, Singapore",
   hours: "10am – 10pm daily · Consultations 11am – 8pm",
+  heroImage: "",
   socials: BRAND.socials,
 };
 
@@ -46,7 +47,28 @@ export const defaultPages = {
     Eyebrow: loc("About us"),
     Headline: loc("Trusted expertise, tailored care, and lasting wellness."),
     Intro: loc(
-      "Established in 2016, Liang Yi has blended a 2,000-year tradition with modern rigour to create a truly calming TCM experience."
+      "Established in 2016, Liang Yi has blended a 2,000-year tradition with modern rigour to create a truly calming TCM experience. Where heritage, evidence and care come together beautifully."
+    ),
+    "Banner image": "",
+    "Banner quote": loc("We restore the balance the body was built to keep."),
+    "Story eyebrow": loc("Who we are"),
+    "Story headline": loc("True wellness begins from within."),
+    "Story body": loc(
+      "Liang Yi is a registered TCM clinic with the TCM Practitioners Board, established in 2016. Our care is grounded in exceptional, result-oriented solutions — complemented by proprietary therapies and techniques developed over many years.\n\nWe believe true wellness begins from within: when the body's internal balance of Qi, Blood, Yin and Yang is supported and maintained. Rather than chasing symptoms, we address the underlying imbalance — using classical principles like Zang-Fu diagnosis, meridian flow and body-constitution analysis."
+    ),
+    "Approach eyebrow": loc("Our approach"),
+    "Approach headline": loc("Three principles we live by."),
+    "Principle 1 title": loc("Invest in your health"),
+    "Principle 1 copy": loc(
+      "In Chinese medicine, the smooth circulation of Qi and Blood is the foundation of a healthy body. Prevention is the best form of care — and health is your most valuable asset."
+    ),
+    "Principle 2 title": loc("Progress at your own rhythm"),
+    "Principle 2 copy": loc(
+      "Healing is gradual. Through regular tuina, acupuncture, herbal care and guidance, we help your body recover at a pace that lasts."
+    ),
+    "Principle 3 title": loc("Understand your own body"),
+    "Principle 3 copy": loc(
+      "We help you understand your TCM body constitution, so you can make informed, everyday choices that keep you well."
     ),
   },
   Services: {

@@ -1,13 +1,13 @@
 import "dotenv/config";
 import path from "node:path";
-import { mkdirSync } from "node:fs";
+import { mkdirSync, unlinkSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import express, { type Request, type Response, type NextFunction } from "express";
 import cors from "cors";
 import multer from "multer";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { sql, ensureSchema, seedIfEmpty } from "./db";
+import { sql, ensureSchema, seedIfEmpty, defaultPages } from "./db";
 
 const PORT = Number(process.env.PORT) || 4000;
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-me";
@@ -47,6 +47,18 @@ app.use("/api/uploads", express.static(uploadsDir));
 async function getSetting<T>(key: string): Promise<T | null> {
   const rows = (await sql`select value from cms_settings where key = ${key}`) as { value: T }[];
   return rows[0]?.value ?? null;
+}
+
+/** Deep-merge stored page content over the seed defaults (stored values win). */
+function mergePages(stored: Record<string, Record<string, unknown>> | null) {
+  const out: Record<string, Record<string, unknown>> = {};
+  const pageNames = new Set([...Object.keys(defaultPages), ...Object.keys(stored ?? {})]);
+  for (const page of pageNames) {
+    const def = (defaultPages as Record<string, Record<string, unknown>>)[page] ?? {};
+    const cur = stored?.[page] ?? {};
+    out[page] = { ...def, ...cur };
+  }
+  return out;
 }
 
 async function putSetting(key: string, value: unknown) {
@@ -109,11 +121,14 @@ app.post(
 app.get(
   "/api/bootstrap",
   wrap(async (_req, res) => {
-    const [company, pages, pricing] = await Promise.all([
+    const [company, storedPages, pricing] = await Promise.all([
       getSetting("company"),
-      getSetting("pages"),
+      getSetting<Record<string, Record<string, unknown>>>("pages"),
       getSetting("pricing"),
     ]);
+    // Merge default page fields with stored overrides so newly-added fields
+    // appear in the admin/public even when the DB was seeded earlier (stored wins).
+    const pages = mergePages(storedPages);
     const services = (await sql`select data from cms_services order by sort, id`) as { data: unknown }[];
     const articles = (await sql`select data from cms_articles order by sort, slug`) as { data: unknown }[];
     const locations = (await sql`select data from cms_locations order by sort, id`) as { data: unknown }[];
@@ -297,7 +312,24 @@ app.delete("/api/testimonials/:id", requireAuth, wrap(async (req, res) => {
 
 /* ---------- upload ---------- */
 
-app.post("/api/upload", requireAuth, upload.single("file"), (req: Request, res: Response) => {
+// Multer runs first so the request body is fully consumed before we respond —
+// responding to an unread upload stream resets the socket (ERR_CONNECTION_ABORTED).
+app.post("/api/upload", upload.single("file"), (req: AuthedRequest, res: Response) => {
+  const header = req.headers.authorization;
+  const token = header?.startsWith("Bearer ") ? header.slice(7) : null;
+  try {
+    if (!token) throw new Error("no token");
+    req.user = jwt.verify(token, JWT_SECRET) as { email: string; role: string };
+  } catch {
+    if (req.file) {
+      try {
+        unlinkSync(req.file.path);
+      } catch {
+        /* ignore */
+      }
+    }
+    return res.status(401).json({ error: "Not authenticated" });
+  }
   if (!req.file) return res.status(400).json({ error: "No file uploaded" });
   res.json({ url: `/api/uploads/${req.file.filename}`, type: req.file.mimetype });
 });

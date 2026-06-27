@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LangProvider } from "@/lib/lang";
+import { PublicCmsProvider } from "@/lib/cms-data";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import Index from "@/pages/Index";
 import Locations from "@/pages/Locations";
@@ -15,6 +16,7 @@ import AdminApp from "@/admin/AdminApp";
 export default function App() {
   return (
     <LangProvider>
+    <PublicCmsProvider>
     <SmoothScrollProvider>
       <BrowserRouter>
         <Routes>
@@ -32,6 +34,7 @@ export default function App() {
         </Routes>
       </BrowserRouter>
     </SmoothScrollProvider>
+    </PublicCmsProvider>
     </LangProvider>
   );
 }

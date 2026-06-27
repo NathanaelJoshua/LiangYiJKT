@@ -1,8 +1,12 @@
 import { ArrowRight } from "@phosphor-icons/react";
+import { loc, tr } from "@/lib/content";
+import { useLang } from "@/lib/lang";
+import { usePageField } from "@/lib/cms-data";
 import ServiceList from "./ServiceList";
-import MaskReveal from "./ui/MaskReveal";
 
 export default function ServiceGrid() {
+  const { lang } = useLang();
+  const heading = usePageField("Home", "Services heading", loc("Result-oriented TCM for your health needs"));
   return (
     <section id="services" className="bg-ink py-24 text-bg md:py-32">
       <div className="mx-auto max-w-site px-6">
@@ -11,14 +15,7 @@ export default function ServiceGrid() {
             <span className="font-sans text-sm uppercase tracking-[0.2em] text-accent">
               Our services
             </span>
-            <MaskReveal
-              as="h2"
-              className="display mt-5 text-bg text-[clamp(2rem,5vw,3.8rem)]"
-              lines={[
-                "Result-oriented TCM",
-                <span key="l2" className="italic">for your health needs</span>,
-              ]}
-            />
+            <h2 className="display mt-5 text-bg text-[clamp(2rem,5vw,3.8rem)]">{tr(heading, lang)}</h2>
           </div>
           <a
             href="/services"

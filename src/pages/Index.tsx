@@ -1,5 +1,5 @@
 import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
+import HeroWithLoader from "@/components/HeroWithLoader";
 import About from "@/components/About";
 import Partners from "@/components/Partners";
 import ServiceGrid from "@/components/ServiceGrid";
@@ -17,7 +17,7 @@ export default function Index() {
       <ScrollProgress />
       <Navbar overHero />
       <main>
-        <Hero />
+        <HeroWithLoader />
         <About />
         <Partners />
         <ServiceGrid />

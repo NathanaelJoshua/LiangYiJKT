@@ -12,7 +12,8 @@ export default function Pages() {
       <PageHeader title="Page content" desc="Edit the headings and copy for each page of the site." />
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {Object.entries(pages).map(([name, fields]) => {
-          const preview = (fields["Headline"] ?? Object.values(fields)[0])?.en ?? "";
+          const previewVal = fields["Headline"] ?? Object.values(fields).find((v) => typeof v === "object");
+          const preview = previewVal && typeof previewVal === "object" ? previewVal.en : "";
           return (
             <Link key={name} to={`/admin/pages/${encodeURIComponent(name)}`}>
               <Card className="group h-full transition-colors hover:border-ink/30">
