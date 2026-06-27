@@ -22,7 +22,10 @@ app.use(express.json({ limit: "2mb" }));
 // Production (Vercel) streams uploads to Vercel Blob; local dev writes to disk.
 const useBlob = !!process.env.BLOB_READ_WRITE_TOKEN;
 
-const uploadsDir = fileURLToPath(new URL("../../uploads", import.meta.url));
+// Vercel's deployment FS is read-only except /tmp, so never mkdir a repo path there.
+const uploadsDir = process.env.VERCEL
+  ? "/tmp/uploads"
+  : fileURLToPath(new URL("../../uploads", import.meta.url));
 if (!useBlob) mkdirSync(uploadsDir, { recursive: true });
 
 // Buffer the file in memory so we can persist it to either Blob or disk.
