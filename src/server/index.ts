@@ -18,7 +18,10 @@ app.use(express.json({ limit: "2mb" }));
 
 /* ---------- file uploads ---------- */
 
-const uploadsDir = fileURLToPath(new URL("../../uploads", import.meta.url));
+// On Vercel the deployment filesystem is read-only except /tmp (and ephemeral).
+const uploadsDir = process.env.VERCEL
+  ? "/tmp/uploads"
+  : fileURLToPath(new URL("../../uploads", import.meta.url));
 mkdirSync(uploadsDir, { recursive: true });
 
 const storage = multer.diskStorage({
@@ -341,13 +344,21 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 
 /* ---------- boot ---------- */
 
-async function start() {
+// Runs once per process (incl. each serverless cold start) before requests are served.
+export const ready: Promise<void> = (async () => {
   await ensureSchema();
   await seedIfEmpty();
-  app.listen(PORT, () => console.log(`CMS API on http://localhost:${PORT}`));
+})();
+
+// Local dev: start a long-running HTTP server. On Vercel the app is exported and
+// invoked per-request as a serverless function instead (see api/[...path].ts).
+if (!process.env.VERCEL) {
+  ready
+    .then(() => app.listen(PORT, () => console.log(`CMS API on http://localhost:${PORT}`)))
+    .catch((err) => {
+      console.error("Failed to start server:", err);
+      process.exit(1);
+    });
 }
 
-start().catch((err) => {
-  console.error("Failed to start server:", err);
-  process.exit(1);
-});
+export default app;
