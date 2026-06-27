@@ -1,6 +1,7 @@
 import "dotenv/config";
 import path from "node:path";
-import { mkdirSync, unlinkSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
+import { put } from "@vercel/blob";
 import { fileURLToPath } from "node:url";
 import express, { type Request, type Response, type NextFunction } from "express";
 import cors from "cors";
@@ -18,23 +19,15 @@ app.use(express.json({ limit: "2mb" }));
 
 /* ---------- file uploads ---------- */
 
-// On Vercel the deployment filesystem is read-only except /tmp (and ephemeral).
-const uploadsDir = process.env.VERCEL
-  ? "/tmp/uploads"
-  : fileURLToPath(new URL("../../uploads", import.meta.url));
-mkdirSync(uploadsDir, { recursive: true });
+// Production (Vercel) streams uploads to Vercel Blob; local dev writes to disk.
+const useBlob = !!process.env.BLOB_READ_WRITE_TOKEN;
 
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, uploadsDir),
-  filename: (_req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase();
-    const base = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-    cb(null, `${base}${ext}`);
-  },
-});
+const uploadsDir = fileURLToPath(new URL("../../uploads", import.meta.url));
+if (!useBlob) mkdirSync(uploadsDir, { recursive: true });
 
+// Buffer the file in memory so we can persist it to either Blob or disk.
 const upload = multer({
-  storage,
+  storage: multer.memoryStorage(),
   limits: { fileSize: 100 * 1024 * 1024 }, // 100 MB (covers short videos)
   fileFilter: (_req, file, cb) => {
     const ok = /^(image|video)\//.test(file.mimetype);
@@ -42,8 +35,13 @@ const upload = multer({
   },
 });
 
-// Serve uploaded files (proxied via /api in dev).
-app.use("/api/uploads", express.static(uploadsDir));
+const uniqueName = (originalname: string) => {
+  const ext = path.extname(originalname).toLowerCase();
+  return `${Date.now()}-${Math.random().toString(36).slice(2, 8)}${ext}`;
+};
+
+// Local dev only: serve files written to disk (proxied via /api in dev).
+if (!useBlob) app.use("/api/uploads", express.static(uploadsDir));
 
 /* ---------- helpers ---------- */
 
@@ -317,25 +315,34 @@ app.delete("/api/testimonials/:id", requireAuth, wrap(async (req, res) => {
 
 // Multer runs first so the request body is fully consumed before we respond —
 // responding to an unread upload stream resets the socket (ERR_CONNECTION_ABORTED).
-app.post("/api/upload", upload.single("file"), (req: AuthedRequest, res: Response) => {
-  const header = req.headers.authorization;
-  const token = header?.startsWith("Bearer ") ? header.slice(7) : null;
-  try {
-    if (!token) throw new Error("no token");
-    req.user = jwt.verify(token, JWT_SECRET) as { email: string; role: string };
-  } catch {
-    if (req.file) {
-      try {
-        unlinkSync(req.file.path);
-      } catch {
-        /* ignore */
-      }
+app.post(
+  "/api/upload",
+  upload.single("file"),
+  wrap(async (req: AuthedRequest, res: Response) => {
+    const header = req.headers.authorization;
+    const token = header?.startsWith("Bearer ") ? header.slice(7) : null;
+    try {
+      if (!token) throw new Error("no token");
+      req.user = jwt.verify(token, JWT_SECRET) as { email: string; role: string };
+    } catch {
+      return res.status(401).json({ error: "Not authenticated" });
     }
-    return res.status(401).json({ error: "Not authenticated" });
-  }
-  if (!req.file) return res.status(400).json({ error: "No file uploaded" });
-  res.json({ url: `/api/uploads/${req.file.filename}`, type: req.file.mimetype });
-});
+    if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+
+    const filename = uniqueName(req.file.originalname);
+    if (useBlob) {
+      const blob = await put(filename, req.file.buffer, {
+        access: "public",
+        contentType: req.file.mimetype,
+      });
+      return res.json({ url: blob.url, type: req.file.mimetype });
+    }
+
+    // Local dev: persist to disk and serve via /api/uploads.
+    writeFileSync(`${uploadsDir}/${filename}`, req.file.buffer);
+    res.json({ url: `/api/uploads/${filename}`, type: req.file.mimetype });
+  })
+);
 
 // JSON error handler (e.g. file too large / wrong type)
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
