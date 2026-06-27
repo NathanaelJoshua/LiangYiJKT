@@ -1,8 +1,11 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
-import app, { ready } from "../src/server/index";
+import app, { ready } from "./index";
 
-// Vercel routes every /api/* request here. Static import (above) ensures the server
-// code is bundled into the function; the try/catch surfaces runtime init errors as JSON.
+/**
+ * Vercel serverless entry. This file is bundled by esbuild into
+ * `api/[...path].js` at build time (see package.json "build:api"), so all the
+ * relative server imports are inlined — no runtime module resolution needed.
+ */
 export default async function handler(req: IncomingMessage, res: ServerResponse) {
   try {
     await ready;

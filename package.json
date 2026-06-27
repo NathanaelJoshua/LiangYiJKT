@@ -9,7 +9,8 @@
     "dev:all": "concurrently -k -n web,api \"npm:dev\" \"npm:server\"",
     "db:setup": "tsx src/server/setup.ts",
     "db:reseed": "tsx src/server/reseed.ts",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && npm run build:api",
+    "build:api": "esbuild src/server/handler.ts --bundle --platform=node --format=esm --packages=external --outfile=\"api/[...path].js\"",
     "preview": "vite preview"
   },
   "dependencies": {

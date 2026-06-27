@@ -13,6 +13,9 @@ dist-ssr/
 # Uploaded media
 uploads/
 
+# Generated Vercel serverless function (built from src/server/handler.ts)
+api/
+
 # Logs
 *.log
 npm-debug.log*
